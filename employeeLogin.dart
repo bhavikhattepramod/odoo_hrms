@@ -57,7 +57,7 @@ class _loginState extends State<login> {
             (index == -1) ? rawCookie : rawCookie.substring(0, index);
       }
       await storage.write(key: 'cookie', value: headers['cookie']);
-      //print(await storage.read(key: 'employee'));
+      print(await storage.read(key: 'employee'));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('LOGIN SUCCESFULL'),
       ));

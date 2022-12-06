@@ -40,7 +40,11 @@ class _payslipState extends State<payslip> {
     final response =
         await http.get(uri.replace(queryParameters: jsonMap), headers: {
       "Cookie": session.toString(),
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive"
     });
+
     print(response.body);
     if (response.statusCode == 200) {
       var det = jsonDecode(response.body);
@@ -48,17 +52,17 @@ class _payslipState extends State<payslip> {
       if (det['status'] == 'success') {
         var url = det['url'];
         setState(() {
-          reason = 'Downloading...';
+          // reason = 'Downloading...';
           trydown = true;
         });
         print(url);
-        var res = await http.get(Uri.parse(url), headers: {
-          "Cookie": session.toString(),
-          "Accept": "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Connection": "keep-alive"
-        });
-        print(res.body);
+        // var res = await http.get(Uri.parse(url), headers: {
+        //   "Cookie": session.toString(),
+        //   "Accept": "*/*",
+        //   "Accept-Encoding": "gzip, deflate, br",
+        //   "Connection": "keep-alive"
+        // });
+        // print(res.body);
         // var res = await Dio().post(url,
         //     options: Options(
         //         headers: {"Cookie": session.toString()},

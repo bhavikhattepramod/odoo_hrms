@@ -30,6 +30,7 @@ class _dashboardState extends State<dashboard> {
   var lat = 0.0;
   var lon = 0.0;
   var _cad = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -49,11 +50,13 @@ class _dashboardState extends State<dashboard> {
   void postdata() async {
     var session = await storage.read(key: 'cookie');
     var jsonMap = {
-      "date": "2022-12-05 04:49:56",
+      // "date": "2022-12-06 10:49:56",
+      "date": time_in.toString(),
       "latitude_1": lat.toString(),
       "longitude_1": lon.toString(),
       "location_1": _cad.toString()
     };
+
     var url = Uri.parse(
         "https://hrmsprime.com/my_services_api/partner/mark_employee_checkin");
 
@@ -62,19 +65,39 @@ class _dashboardState extends State<dashboard> {
       "Cookie": session.toString(),
       'Accept': '*/*'
     });
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('CHECK IN SUCCESFUL $time_in'),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: 100.0),
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(15),
+          // ),
+          duration: const Duration(milliseconds: 1000)));
+      // return 1;
+    } else if (response.statusCode == 500) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('First Checkout attendance'),
+      ));
+      // return 0;
+
+    }
 
     print("Hi checkin");
     print("Hi" + response.statusCode.toString());
     print("Body" + response.body.toString());
+    print("time " + time_in.toString());
   }
 
   void postdata1() async {
     var jsonMap = {
-      "date": "2022-12-05 06:59:56",
+      // "date": "2022-12-06 10:59:56",
+      "date": time_out.toString(),
       "latitude_2": lat.toString(),
       "longitude_2": lon.toString(),
       "location_2": _cad.toString()
     };
+
     var session = await storage.read(key: 'cookie');
     var url = Uri.parse(
         "https://hrmsprime.com/my_services_api/partner/mark_employee_checkout");
@@ -84,13 +107,30 @@ class _dashboardState extends State<dashboard> {
       "Cookie": session.toString(),
       'Accept': '*/*'
     });
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: 100.0),
+          content: Text('CHECK OUT SUCCESFUL $time_out'),
+
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(15),
+          // ),
+          duration: const Duration(milliseconds: 1000)));
+      // return 1;
+    } else if (response.statusCode == 403) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('First Mark attendance'),
+      ));
+      // return 0;
+
+    }
 
     print("Hi checkout");
     print("Hi" + response.statusCode.toString());
     print("Body" + response.body.toString());
   }
 
-  var time = DateTime.now();
   // @override
   // void initState() {
   //   super.initState();
@@ -111,7 +151,7 @@ class _dashboardState extends State<dashboard> {
         Uri.parse(
             'https://hrmsprime.com/my_services_api/partner/get_dashboard_details'),
         headers: {"Cookie": session.toString()});
-    //print(response.body);
+    // print(response.body);
     if (response.statusCode == 200) {
       bool flag = false;
       var det = jsonDecode(response.body)['employees_list'][0];
@@ -200,29 +240,6 @@ class _dashboardState extends State<dashboard> {
     //print(await Geolocator.getCurrentPosition());
   }
 
-  // Future<int> fetchAlbum1(BuildContext context) async {
-  //   Map<String, dynamic> jsonMap = {
-  //     "date": "2022-12-5 04:59:56",
-  //     "latitude_1": "27.2046° N",
-  //     "longitude_1": "77.4977° E",
-  //     "location_1": "Mysore"
-  //   };
-  //   final response = await http.post(
-  //       Uri.parse(
-  //           'hrmsprime.com/my_services_api/partner/mark_employee_checkin'),
-  //       body: jsonEncode(jsonMap),
-  //       headers: {
-  //         "Content-type": "application/json",
-  //         "Cookie": "session_id=73b764a482ceb4e249543e9785554485bd2d5de3",
-  //         'Accept': '*/*'
-  //       });
-  //   if (response.statusCode.toString() == "200") {
-  //     print("Hi" + response.statusCode.toString());
-  //     print(jsonDecode(response.body));
-  //   }
-  //   return 1;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,7 +325,7 @@ class _dashboardState extends State<dashboard> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(DateFormat.yMMMd().format(DateTime.now())),
+                    // Text(DateFormat.yMMMd().format(DateTime.now())),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -317,7 +334,7 @@ class _dashboardState extends State<dashboard> {
                           color: Colors.black,
                         ),
                         SizedBox(
-                          width: 150,
+                          width: 300,
                           child: Text(
                             _cad,
                             style: TextStyle(overflow: TextOverflow.visible),
@@ -356,38 +373,16 @@ class _dashboardState extends State<dashboard> {
                     setState(
                       () {
                         if (txt == 'CHECKOUT') {
-                          time_out =
-                              DateFormat("hh:mm:ss a").format(DateTime.now());
+                          time_out = DateFormat('yyyy-MM-dd hh:mm:ss')
+                              .format(DateTime.now());
                           postdata1();
-
-                          // Future<int> fetchAlbum1(BuildContext context) async {
-                          //   Map<String, dynamic> jsonMap = {
-                          //     "date": time_out.toString(),
-                          //     "latitude_2": lat.toString(),
-                          //     "longitude_2": lon.toString(),
-                          //     "location_2": _cad.toString(),
-                          //   };
-                          //   final response = await http.post(
-                          //       Uri.parse(
-                          //           'https://hrmsprime.com/my_services_api/partner/mark_employee_checkout'),
-                          //       body: jsonEncode(jsonMap),
-                          //       headers: {
-                          //         "Content-type": "application/json",
-                          //         "Cookie":
-                          //             "session_id=73b764a482ceb4e249543e9785554485bd2d5de3",
-                          //         'Accept': '*/*'
-                          //       });
-                          //   if (response.statusCode.toString() == "200") {
-                          //     print("Hi" + response.statusCode.toString());
-                          //     print(jsonEncode(response.body));
-                          //   }
-                          //   return 1;
-                          // }
 
                           txt = 'CHECKIN';
                         } else if (txt == 'CHECKIN') {
-                          time_in =
-                              DateFormat("hh:mm:ss a").format(DateTime.now());
+                          time_in = DateFormat('yyyy-MM-dd hh:mm:ss')
+                              .format(DateTime.now());
+
+                          // DateFormat("hh:mm:ss a").format(DateTime.now());
 
                           print("aaaaa");
                           print(time_in);
@@ -397,34 +392,6 @@ class _dashboardState extends State<dashboard> {
                           postdata();
 
                           txt = 'CHECKOUT';
-
-                          // void postdata() async {
-                          //   var url = Uri.parse(
-                          //       "https://hrmsprime.com/my_services_api/partner/mark_employee_checkin");
-
-                          //   var data = {
-                          //     "date": time_in.toString(),
-                          //     "latitude_1": lat.toString(),
-                          //     "longitude_1": lon.toString(),
-                          //     "location_1": _cad.toString(),
-                          //   };
-
-                          //   var response =
-                          //       await http.post(url, body: data, headers: {
-                          //     "Content-type": "application/json",
-                          //     "Cookie":
-                          //         "session_id=73b764a482ceb4e249543e9785554485bd2d5de3",
-                          //     'Accept': '*/*'
-                          //   });
-                          //   print(response.statusCode.toString());
-                          //   print(response.body.toString());
-                          // }
-
-                          // @override
-                          // void initState() {
-                          //   super.initState();
-                          //   postdata();
-                          // }
                         }
                       },
                     );
