@@ -12,7 +12,6 @@ import 'package:hrms/employeeLogin.dart';
 import 'package:hrms/payslip.dart';
 import 'package:hrms/profile.dart';
 import 'package:intl/intl.dart';
-import 'model.dart';
 import 'apiCall.dart';
 
 class dashboard extends StatefulWidget {
