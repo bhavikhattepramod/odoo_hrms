@@ -164,6 +164,21 @@ class _dashboardState extends State<dashboard> {
     return Map();
   }
 
+
+
+   Future<Map<String, dynamic>> getData() async {
+    bool trylog = false;
+    var session = await storage.read(key: 'cookie');
+    print(session);
+    final response = await http.get(
+        Uri.parse(
+            "http://hrmsprime.com/my_services_api/partner/get_location_details"),
+        headers: {"Cookie": session.toString()});
+    print("Hoiiiiii"+response.body);
+    // if (response.statusCode == 200) {}
+    return Map();
+  }
+
   bool check = false;
   var time_in = '';
   var time_out = '';
@@ -273,6 +288,7 @@ class _dashboardState extends State<dashboard> {
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(color: Theme.of(context).primaryColor),
               child: FutureBuilder<Map<String, dynamic>>(
+                
                 future: fetchAlbum(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -304,10 +320,10 @@ class _dashboardState extends State<dashboard> {
                               snapshot.data!['name'],
                               style: TextStyle(color: Colors.white),
                             ),
-                            Text(
-                              snapshot.data!['job_title '],
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            // Text(
+                            //   snapshot.data!['job_title '],
+                            //   style: TextStyle(color: Colors.white),
+                            // ),
                             Text(snapshot.data!['work_email'],
                                 style: TextStyle(color: Colors.white)),
                           ],
@@ -375,6 +391,7 @@ class _dashboardState extends State<dashboard> {
                           time_out = DateFormat('yyyy-MM-dd hh:mm:ss')
                               .format(DateTime.now());
                           postdata1();
+                          getData();
 
                           txt = 'CHECKIN';
                         } else if (txt == 'CHECKIN') {
