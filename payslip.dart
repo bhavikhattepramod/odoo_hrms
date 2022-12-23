@@ -55,17 +55,16 @@ class _payslipState extends State<payslip> {
           reason = 'Downloading...';
           trydown = true;
         });
-        print("url   "+url);
-
-
-            
-      
+        
+        print("url   "+url);      
+        return url;
       } else {
         reason = det['reason'];
         setState(() {
           trydown = true;
         });
       }
+
     }
   }
   
@@ -195,15 +194,10 @@ class _payslipState extends State<payslip> {
               ),
             ),
             onPressed: (){
-              Navigator.push(
+               Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  PDF().cachedFromUrl(
-             'https://www.tutorialspoint.com/flutter/flutter_tutorial.pdf',
-              maxAgeCacheObject:Duration(days: 30), //duration of cache
-              placeholder: (progress) => Center(child: Text('$progress %')),
-              errorWidget: (error) => Center(child: Text(error.toString())),
-           )
+                      builder: (context) => FileDownloader(),
                     ));
             },
             child: Text(
@@ -211,9 +205,9 @@ class _payslipState extends State<payslip> {
               style: TextStyle(
                 color: Colors.white,
               ),
-              
               ),
             ),
+            
           if (trydown) Text(reason),
         ],
       )),

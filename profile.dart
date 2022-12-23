@@ -16,12 +16,12 @@ class Profile extends StatelessWidget {
     bytes = Base64Codec().decode(image!);
     bool trylog = false;
     var session = await storage.read(key: 'cookie');
-    // print(session);
+    print(session);
     final response = await http.get(
         Uri.parse(
             'https://hrmsprime.com/my_services_api/partner/get_employee_details'),
         headers: {"Cookie": session.toString()});
-    // print(response.body);
+    print(response.body);
     if (response.statusCode == 200) {
       bool flag = false;
 

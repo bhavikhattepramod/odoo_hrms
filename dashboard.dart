@@ -173,7 +173,17 @@ class _dashboardState extends State<dashboard> {
     final response = await http.get(
         Uri.parse(
             "http://hrmsprime.com/my_services_api/partner/get_location_details"),
-        headers: {"Cookie": session.toString()});
+         headers: {
+      "Content-type": "application/json",
+      "Cookie": session.toString(),
+      'Accept': '*/*'
+    });
+     if (response.statusCode == 200) {
+      bool flag = false;
+      var det = jsonDecode(response.body)['Latitude'];
+     }
+
+
     print("Hoiiiiii"+response.body);
     // if (response.statusCode == 200) {}
     return Map();

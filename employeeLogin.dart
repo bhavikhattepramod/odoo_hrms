@@ -45,7 +45,7 @@ class _loginState extends State<login> {
         Uri.parse('https://hrmsprime.com/session/auth/login'),
         body: jsonEncode(jsonMap),
         headers: {"Content-type": "application/json"});
-    print(response.body);
+    //print(response.body);
 
     if (response.statusCode == 200) {
       bool flag = false;
@@ -57,7 +57,7 @@ class _loginState extends State<login> {
             (index == -1) ? rawCookie : rawCookie.substring(0, index);
       }
       await storage.write(key: 'cookie', value: headers['cookie']);
-      print(await storage.read(key: 'employee'));
+      //print(await storage.read(key: 'employee'));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('LOGIN SUCCESFULL'),
       ));

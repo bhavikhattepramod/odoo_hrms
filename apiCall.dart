@@ -61,24 +61,66 @@ class Employee {
   }
 }
 
-class Checkin {
-  final String date;
-  final String lat;
-  final String lon;
-  // final String _cad;
+class Location{
+  // final int eleft;
+  // final String eadd;
+  // final String epdate;
 
-  Checkin({
-    required this.date,
-    required this.lat,
-    required this.lon,
-    // required this._cad,
-  });
-  factory Checkin.fromJson(Map<String, dynamic> json) {
-    return Checkin(
-      date: json['date'],
-      lat: json['latitude_1'],
-      lon: json['longitude_1'],
-      // _cad: json['location_1'],
-    );
+  final String Latitude;
+  final String Longitude;
+  final String Date;
+  
+
+  Location(
+   
+      {required this.Latitude,
+      required this.Longitude,
+      required this.Date,
+      });
+
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+      
+        Latitude: json['Latitude'],
+        Longitude: json['Longitude'],
+        Date: json['Date '],
+       );
   }
 }
+
+class Payslip{
+  // final int eleft;
+  // final String eadd;
+  // final String epdate;
+
+  final String employee_id;
+  final String employee_name;
+  final String payslip_id;
+  final String status;
+  final String url;
+  
+
+  Payslip(
+   
+      {required this.employee_id,
+      required this.employee_name,
+      required this.payslip_id,
+      required this.status,
+      required this.url,
+      });
+
+  factory Payslip.fromJson(Map<String, dynamic> json) {
+    return Payslip(
+      
+        employee_id: json['employee_id'],
+        employee_name: json['employee_name'],
+        payslip_id: json['payslip_id '],
+        status: json['status '],
+        url: json['url '],
+       );
+  }
+}
+
+
+
+  
