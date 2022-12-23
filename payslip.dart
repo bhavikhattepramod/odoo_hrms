@@ -10,6 +10,7 @@ import 'package:hrms/view_payslip.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 // import 'package:pspdfkit_flutter/src/main.dart';
 
 class payslip extends StatefulWidget {
@@ -67,6 +68,7 @@ class _payslipState extends State<payslip> {
       }
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +198,12 @@ class _payslipState extends State<payslip> {
               Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyApp(),
+                      builder: (context) =>  PDF().cachedFromUrl(
+             'https://www.tutorialspoint.com/flutter/flutter_tutorial.pdf',
+              maxAgeCacheObject:Duration(days: 30), //duration of cache
+              placeholder: (progress) => Center(child: Text('$progress %')),
+              errorWidget: (error) => Center(child: Text(error.toString())),
+           )
                     ));
             },
             child: Text(
